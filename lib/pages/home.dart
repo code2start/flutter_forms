@@ -6,45 +6,50 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final formKey = GlobalKey<FormState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  var myFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    myFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myFocus.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
-        title: Text('Form Lesson 1'),
+        title: Text('Forms Lesson 2'),
       ),
-      body: Form(
-        key: formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Enter your name',
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'First Name',
+                ),
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Name is required";
-                }
-                return null;
-              },
-            ),
-            RaisedButton(
-              child: Text('Send'),
-              onPressed: () {
-                if (formKey.currentState.validate()) {
-                  //save data local or go to server
-                  scaffoldKey.currentState.showSnackBar(SnackBar(
-                    content: Text(
-                      'Saving data local or on the server',
-                    ),
-                  ));
-                }
-              },
-            )
-          ],
+              TextFormField(
+                focusNode: myFocus,
+                decoration: InputDecoration(
+                  hintText: 'Last Name',
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Text('Next'),
+        onPressed: () => myFocus.requestFocus(),
       ),
     );
   }
