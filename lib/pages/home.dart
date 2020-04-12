@@ -6,50 +6,43 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var myFocus;
+  String text = '';
+  final myController = TextEditingController();
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    myFocus = FocusNode();
+    myController.addListener(getLatest);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    myFocus.dispose();
+  getLatest() {
+    setState(() {
+      text = myController.text;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forms Lesson 2'),
+        title: Text('Flutter forms lesson 3'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
           child: Column(
             children: <Widget>[
-              TextFormField(
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'First Name',
-                ),
+              Text(
+                'You typed \n $text',
+                style: Theme.of(context).textTheme.headline,
               ),
               TextFormField(
-                focusNode: myFocus,
-                decoration: InputDecoration(
-                  hintText: 'Last Name',
-                ),
+                decoration: InputDecoration(hintText: 'Enter your name'),
+                controller: myController,
               ),
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Text('Next'),
-        onPressed: () => myFocus.requestFocus(),
       ),
     );
   }
